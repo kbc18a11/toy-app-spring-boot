@@ -1,0 +1,8 @@
+マイグレーション：flyway 7.15.0
+  バージョン8系は、mysql5.7に非対応ため、7.15.0を利用
+    8系を利用すると、Unsupported Database: MySQL 5.7とエラーが表示される
+  Found more than one migration with version 1の対応方法
+    sqlファイル名のバージョン箇所(VX.X.X)に衝突が起きている。
+      以下の場合でも衝突が起きて、アウト
+        V1.0.0__users.sql
+        V1.0.0__microposts.sql
