@@ -1,6 +1,5 @@
 package com.example.toyappspringboot.repository;
 
-import java.util.ArrayList;
 import java.util.List;
 import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Mapper;
