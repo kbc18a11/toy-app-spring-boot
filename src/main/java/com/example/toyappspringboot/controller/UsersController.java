@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.server.ResponseStatusException;
 import com.example.toyappspringboot.model.User;
 import com.example.toyappspringboot.request_body.CreateUserRequestBody;
+import com.example.toyappspringboot.response_body.GetUsersResponseBody;
 import com.example.toyappspringboot.service.UserService;
 
 
@@ -38,6 +40,27 @@ public class UsersController {
       return new ResponseEntity<>(HttpStatus.CREATED);
     } catch (Exception e) {
       System.err.println(e);
+
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+    }
+  }
+
+  /**
+   * ユーザー一覧取得
+   * 
+   * @param requestBody
+   * @return
+   */
+  @GetMapping(value = "/users")
+  public ResponseEntity<GetUsersResponseBody> getUsers() {
+
+    try {
+      var response = new GetUsersResponseBody();
+      response.setUsers(userService.findAll());
+
+      return new ResponseEntity<GetUsersResponseBody>(response, HttpStatus.OK);
+    } catch (Exception e) {
+      e.printStackTrace();
 
       throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
     }

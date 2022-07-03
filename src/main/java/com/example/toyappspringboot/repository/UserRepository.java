@@ -1,7 +1,10 @@
 package com.example.toyappspringboot.repository;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.SelectProvider;
 import com.example.toyappspringboot.model.User;
 import org.apache.ibatis.builder.annotation.ProviderMethodResolver;
 import org.apache.ibatis.jdbc.SQL;
@@ -16,6 +19,14 @@ public interface UserRepository {
    */
   @InsertProvider(UserSqlProvider.class)
   public void create(User user);
+
+  /**
+   * レコードをすべて取得
+   * 
+   * @return
+   */
+  @SelectProvider(UserSqlProvider.class)
+  public List<User> findAll();
 
   /**
    * SQLの定義
@@ -34,6 +45,20 @@ public interface UserRepository {
           INSERT_INTO("users");
           VALUES("name", "#{name}");
           VALUES("email", "#{email}");
+        }
+      }.toString();
+    }
+
+    /**
+     * レコードをすべて取得
+     * 
+     * @return
+     */
+    public String findAll() {
+      return new SQL() {
+        {
+          SELECT("*");
+          FROM("users");
         }
       }.toString();
     }
