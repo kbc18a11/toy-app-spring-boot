@@ -5,11 +5,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.server.ResponseStatusException;
 import com.example.toyappspringboot.model.User;
 import com.example.toyappspringboot.request_body.CreateUserRequestBody;
+import com.example.toyappspringboot.request_body.UpdateUserRequestBody;
 import com.example.toyappspringboot.response_body.GetUsersResponseBody;
 import com.example.toyappspringboot.service.UserService;
 
@@ -59,6 +62,34 @@ public class UsersController {
       response.setUsers(userService.findAll());
 
       return new ResponseEntity<GetUsersResponseBody>(response, HttpStatus.OK);
+    } catch (Exception e) {
+      e.printStackTrace();
+
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+    }
+  }
+
+  /**
+   * ユーザー情報更新
+   * 
+   * @param userId
+   * @param requestBody
+   * @return
+   */
+  @PatchMapping(value = "/users/{id}")
+  public ResponseEntity<Void> updateUsers(@PathVariable("id") String userId, @RequestBody UpdateUserRequestBody requestBody) {
+    System.out.println(userId);
+
+    try {
+      var user = new User();
+      user.setId(Integer.parseInt(userId));
+      user.setName(requestBody.getName());
+      user.setEmail(requestBody.getEmail());
+
+      // ユーザー情報更新
+      userService.update(user);
+
+      return new ResponseEntity<Void>(HttpStatus.OK);
     } catch (Exception e) {
       e.printStackTrace();
 

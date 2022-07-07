@@ -26,4 +26,13 @@ public class UserService {
   public List<User> findAll() {
     return userRepository.findAll();
   }
+
+  /**
+   * ユーザー情報更新
+   * 
+   * @param user
+   */
+  public void update(User user) {
+    userRepository.update(user);
+  }
 }
